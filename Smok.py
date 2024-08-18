@@ -19,12 +19,20 @@ import Premake_Links
 import Premake_BuildOptions
 import Premake_Flags
 
+import BTDSTD
+
+#defines the link name
+SMOK_Name = "Smok"
+
+#defines the include directory
+SMOK_INCLUDE_DIR = "Smok/includes"
+
 def GeneratePremake():
     premakeCode = ""
 
     #KAR main exe project
     KARProject = PremakeGen.Project()
-    KARProject.name = "Smok"
+    KARProject.name = SMOK_Name
     KARProject.kind = "StaticLib"
     KARProject.language = "C++"
         
@@ -40,7 +48,8 @@ def GeneratePremake():
 
     KARProject.includeDirs = {Dep_SDL.SDL_INCLUDE_DIR,
 Dep_FMT.FMT_INCLUDE_DIR, Dep_GLM.GLM_INCLUDE_DIR, Dep_STB.STB_INCLUDE_DIR,
-Dep_Vulkan.VMA_INCLUDE_DIR, Dep_Vulkan.VK_BOOTSTRAP_INCLUDE_DIR, Dep_Vulkan.VULKAN_INCLUDE_DIR, Dep_ImGUI.IMGUI_INCLUDE_DIR}
+Dep_Vulkan.VMA_INCLUDE_DIR, Dep_Vulkan.VK_BOOTSTRAP_INCLUDE_DIR, Dep_Vulkan.VULKAN_INCLUDE_DIR, Dep_ImGUI.IMGUI_INCLUDE_DIR,
+ BTDSTD.BTD_INCLUDE_DIR}
     premakeCode = premakeCode + KARProject.GenerateProjectIncludeString()
 
     premakeCode = premakeCode + Premake_Links.GenerateLinksString({Dep_Vulkan.VULKAN_LINK_DIR})
@@ -54,7 +63,7 @@ Dep_Vulkan.VMA_INCLUDE_DIR, Dep_Vulkan.VK_BOOTSTRAP_INCLUDE_DIR, Dep_Vulkan.VULK
     premakeCode = premakeCode + Premake_Flags.GenerateFlagsString({"NoRuntimeChecks",
     "MultiProcessorCompile"})
 
-    Premake_BuildOptions.GenerateBuildOptionFlagsString("/utf-8")
+    premakeCode = premakeCode + Premake_BuildOptions.GenerateBuildOptionFlagsString({"/utf-8"})
 
     premakeCode = premakeCode + """
 
