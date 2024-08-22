@@ -28,7 +28,7 @@ namespace Smok::ECS::Comp
 		//generates the model matrix regardless of dirty flag, does not reset dirty flag
 		inline glm::mat4 GenerateModelMatrix_Forced()
 		{
-			modelMatrix = glm::toMat4(rotation);
+			modelMatrix = glm::translate(glm::mat4(1.0f), position) * glm::toMat4(rotation);
 			return modelMatrix;
 		}
 
@@ -65,5 +65,11 @@ namespace Smok::ECS::Comp
 
 		//sets the roation || assumes passed in data is NOT in radians || this is desired over setting directly so the dirty flag is set
 		inline void SetEularRotation(const glm::vec3 rot) { SetEularRotation_Radians(rot); }
+
+		//rotates on Y axis || assumes passed in data is NOT in radians || this is desired over setting directly so the dirty flag is set
+		inline void RotateY(const double& rate)
+		{
+			SetEularRotation_Radians({ eularRotation.x, eularRotation.y += glm::radians(rate), eularRotation.z });
+		}
 	};
 }
